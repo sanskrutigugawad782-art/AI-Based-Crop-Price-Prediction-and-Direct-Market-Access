@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Prediction Result &middot; AgriConnect{% endblock %}
+
+{% block content %}
+<section class="result-section">
+  <div class="result-card">
+    <h1>Prediction result</h1>
+
+    <div class="result-row">
+      <span class="result-row__label">{{ current_year }}</span>
+      <span class="result-row__value">₹{{ "%.2f"|format(current_price) }} / quintal</span>
+    </div>
+    <div class="result-row result-row--future">
+      <span class="result-row__label">{{ future_year }}</span>
+      <span class="result-row__value">₹{{ "%.2f"|format(future_price) }} / quintal</span>
+    </div>
+
+    <p class="result-summary">
+      {{ commodity }} in {{ market }}, {{ district }} for {{ month_name }}: predicted to
+      {% if change_pct >= 0 %}
+        rise <strong class="up">{{ "%.1f"|format(change_pct) }}%</strong>
+      {% else %}
+        fall <strong class="down">{{ "%.1f"|format(change_pct|abs) }}%</strong>
+      {% endif %}
+      from {{ current_year }} to {{ future_year }}.
+    </p>
+
+    <a class="btn btn--primary" href="{{ url_for('home') }}">Go back to home</a>
+    <a class="btn btn--ghost" href="{{ url_for('predict') }}">Run another prediction</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   AgriConnect Design System
+   Reference-derived tokens: minimalist UI + cinematic photography +
+   editorial typography + generous whitespace + one clear CTA.
+   Green appears through nature and branding, not as a site-wide background.
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* -- Brand palette ------------------------------------------------------ */
+  --color-ink: #171A16;          /* near-black charcoal — primary text       */
+  --color-charcoal: #2A2E28;     /* secondary heading                        */
+  --color-smoke: #5C6259;        /* muted body text                          */
+  --color-sage: #8A917F;         /* tertiary / captions                      */
+
+  --color-ivory: #F5F3ED;        /* warm off-white page background           */
+  --color-ivory-deep: #ECE9E1;   /* section backgrounds / separators         */
+  --color-pale: #E7EDF1;         /* pale blue — air / sky tints              */
+
+  --color-agri: #1F3A2A;         /* deep agricultural green — brand          */
+  --color-agri-deep: #162B1F;    /* pressed / darker green                   */
+  --color-moss: #42684F;         /* secondary muted green                    */
+  --color-lime: #C8DBA6;         /* light natural green — CTA pill           */
+  --color-lime-soft: #E4EED3;    /* soft lime tint                           */
+  --color-wood: #C9A87C;         /* warm wood accent                         */
+
+  /* -- Typography ---------------------------------------------------------- */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* -- Motion -------------------------------------------------------------- */
+  --duration-fade: 0.7s;
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* -- Radii --------------------------------------------------------------- */
+  --radius-pill: 999px;
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-ivory);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-lime);
+  color: var(--color-ink);
+}
+
+/* ---------------------------------------------------------------------------
+   Editorial primitives
+--------------------------------------------------------------------------- */
+
+/* Uppercase micro-label used above section headings */
+.u-eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--color-sage);
+}
+
+/* Huge editorila display heading */
+.u-display {
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 0.96;
+  text-transform: uppercase;
+}
+
+/* Thin hairline used as a decoration rule */
+.u-rule {
+  background: var(--color-ink);
+  opacity: 0.9;
+  height: 1px;
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll reveal helpers (Framer Motion variants used in sections)
+--------------------------------------------------------------------------- */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(28px);
+}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}AgriConnect &middot; Know before you sow{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero__inner">
+    <p class="hero__eyebrow">Karnataka mandi price intelligence</p>
+    <h1 class="hero__headline">Know the price before you sow.</h1>
+    <p class="hero__sub">
+      AgriConnect combines a trained price-prediction model with year-ahead
+      market forecasts, so you can check what a crop will fetch at a
+      specific mandi, and see which crop is trending upward before you
+      plant your next season.
+    </p>
+    <div class="hero__actions">
+      <a class="btn btn--primary" href="{{ url_for('predict') }}">Predict a price</a>
+      <a class="btn btn--ghost" href="{{ url_for('recommend') }}">See what to grow next</a>
+    </div>
+  </div>
+  <div class="hero__field" aria-hidden="true"></div>
+</section>
+
+<section class="teaser">
+  <div class="teaser__card">
+    <span class="teaser__label">Trending now</span>
+    <h2>{{ top_pick.commodity }}</h2>
+    <p>
+      Projected to move
+      <strong class="{{ 'up' if top_pick.growth_pct_90d >= 0 else 'down' }}">
+        {{ "%+.1f"|format(top_pick.growth_pct_90d) }}%
+      </strong>
+      over the next 90 days, from ₹{{ "%.0f"|format(top_pick.last_actual_price) }}
+      toward ₹{{ "%.0f"|format(top_pick.projected_price_90d) }} per quintal.
+    </p>
+    <a class="teaser__link" href="{{ url_for('recommend') }}">See the full ranking &rarr;</a>
+  </div>
+</section>
+
+<section class="how">
+  <h2>How it works</h2>
+  <div class="how__grid">
+    <div class="how__step">
+      <h3>Predict a price</h3>
+      <p>Pick a crop, district, mandi, variety and grade, then compare a current-year price against a future year.</p>
+    </div>
+    <div class="how__step">
+      <h3>Recommend a crop</h3>
+      <p>See all six tracked crops ranked by projected price growth, weighted by how reliable each forecast has been historically.</p>
+    </div>
+    <div class="how__step">
+      <h3>Decide with context</h3>
+      <p>Every number comes with its margin of error, so you know how much to trust it before you act on it.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

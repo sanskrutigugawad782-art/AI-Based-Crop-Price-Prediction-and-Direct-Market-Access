@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Help &middot; AgriConnect{% endblock %}
+
+{% block content %}
+<section class="help-section">
+  <h1>How AgriConnect works</h1>
+
+  <h2>Predict Price</h2>
+  <p>
+    Uses a Random Forest model trained on historical mandi (market) price
+    records for six crops across Bengaluru and Mysuru districts. Choose a
+    crop, district, market, variety, and grade, then compare a current-year
+    price against any future year for the same month.
+  </p>
+
+  <h2>Recommend Crop</h2>
+  <p>
+    Uses separate time-series forecasts (Prophet or Holt-Winters, whichever
+    performed better historically for that crop) covering 6 commodities.
+    Crops are ranked by projected price growth over the next 90 days,
+    scaled down for crops where the forecast has historically had a wider
+    margin of error.
+  </p>
+
+  <h2>Things to keep in mind</h2>
+  <ul>
+    <li>Price predictions are estimates from historical patterns, not guarantees.</li>
+    <li>The crop recommendation is based on price trend only &mdash; there's no market demand or sown-area data behind it.</li>
+    <li>Predictions for years far beyond the historical data range are less reliable.</li>
+    <li>Not every crop/variety combination on the Predict Price form occurred in the original data.</li>
+  </ul>
+</section>
+{% endblock %}

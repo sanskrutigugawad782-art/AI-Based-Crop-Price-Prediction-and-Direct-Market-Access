@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Predict Price &middot; AgriConnect{% endblock %}
+
+{% block content %}
+<section class="form-section">
+  <div class="form-card">
+    <h1>Crop price prediction</h1>
+    <p class="form-card__sub">Compare a mandi price now against a future year, for the same crop and grade.</p>
+
+    {% if error %}
+      <p class="form-error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('predict') }}">
+      <label for="commodity">Crop</label>
+      <select id="commodity" name="commodity" required>
+        {% for c in commodities %}
+          <option value="{{ c }}" {% if form.get('commodity')==c %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="district">District</label>
+      <select id="district" name="district" required onchange="filterMarkets()">
+        {% for d in districts %}
+          <option value="{{ d }}" {% if form.get('district')==d %}selected{% endif %}>{{ d }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="market">Market (mandi)</label>
+      <select id="market" name="market" required>
+        {% for m in markets %}
+          <option value="{{ m }}" {% if form.get('market')==m %}selected{% endif %}>{{ m }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="variety">Variety</label>
+      <select id="variety" name="variety" required>
+        {% for v in varieties %}
+          <option value="{{ v }}" {% if form.get('variety')==v %}selected{% endif %}>{{ v }}</option>
+        {% endfor %}
+      </select>
+      <p class="field-note">Variety options come from the full training set and aren't filtered per crop — not every combination appeared historically.</p>
+
+      <label for="grade">Grade</label>
+      <select id="grade" name="grade" required>
+        {% for g in grades %}
+          <option value="{{ g }}" {% if form.get('grade')==g %}selected{% endif %}>{{ g }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="month">Month</label>
+      <select id="month" name="month" required>
+        {% for num, name in months %}
+          <option value="{{ num }}" {% if form.get('month')|int==num %}selected{% endif %}>{{ name }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="current_year">Current year</label>
+      <input type="number" id="current_year" name="current_year" value="{{ form.get('current_year', current_year) }}" required>
+
+      <label for="future_year">Future year</label>
+      <input type="number" id="future_year" name="future_year" value="{{ form.get('future_year', current_year + 2) }}" required>
+
+      <button type="submit" class="btn btn--primary btn--block">Predict</button>
+    </form>
+  </div>
+</section>
+
+<script>
+  const marketsByDistrict = {{ market_district_map | tojson }};
+
+  function filterMarkets() {
+    const district = document.getElementById('district').value;
+    const marketSelect = document.getElementById('market');
+    const allowed = marketsByDistrict[district] || [];
+    let firstVisible = null;
+    [...marketSelect.options].forEach(opt => {
+      const show = allowed.includes(opt.value);
+      opt.hidden = !show;
+      if (show && firstVisible === null) firstVisible = opt.value;
+    });
+    if (!allowed.includes(marketSelect.value) && firstVisible) {
+      marketSelect.value = firstVisible;
+    }
+  }
+  document.addEventListener('DOMContentLoaded', filterMarkets);
+</script>
+{% endblock %}

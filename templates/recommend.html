@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Recommend Crop &middot; AgriConnect{% endblock %}
+
+{% block content %}
+<section class="recommend-section">
+  <h1>Which crop should you grow next?</h1>
+  <p class="recommend-intro">
+    Ranked by projected price growth over the next 90 days, discounted by
+    how reliable that crop's forecast has historically been. This reflects
+    <strong>price trend, not confirmed market demand</strong> &mdash; the
+    underlying data doesn't include volume or demand figures.
+  </p>
+
+  <div class="top-pick">
+    <span class="top-pick__label">Top pick</span>
+    <h2>{{ top_pick.commodity }}</h2>
+    <p>
+      Last actual price ₹{{ "%.0f"|format(top_pick.last_actual_price) }} &rarr;
+      projected ₹{{ "%.0f"|format(top_pick.projected_price_90d) }} per quintal
+      ({{ "%+.1f"|format(top_pick.growth_pct_90d) }}%), forecast confidence
+      {{ "%.0f"|format(top_pick.confidence) }}%.
+    </p>
+  </div>
+
+  <table class="rank-table">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Crop</th>
+        <th>Last price</th>
+        <th>Projected (90d)</th>
+        <th>Growth</th>
+        <th>Confidence</th>
+        <th>Model</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in recs %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ r.commodity }}</td>
+        <td>₹{{ "%.0f"|format(r.last_actual_price) }}</td>
+        <td>₹{{ "%.0f"|format(r.projected_price_90d) }}</td>
+        <td class="{{ 'up' if r.growth_pct_90d >= 0 else 'down' }}">
+          {{ "%+.1f"|format(r.growth_pct_90d) }}%
+        </td>
+        <td>
+          <div class="confidence-bar">
+            <div class="confidence-bar__fill" style="width: {{ r.confidence }}%"></div>
+          </div>
+          <span class="confidence-bar__label">{{ "%.0f"|format(r.confidence) }}%</span>
+        </td>
+        <td>{{ r.method }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}
